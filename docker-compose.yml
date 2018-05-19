@@ -1,0 +1,27 @@
+version: '2'
+services:
+
+  auth:
+    image: jincort/backend-auth
+    build:
+        context: ./
+        dockerfile: Dockerfile
+    environment:
+      REDIS_URL: 'redis://redis:6379'
+      FORCE_HTTPS: disabled
+      JWT_KEY: "uZrJ!xe*xN?!;oU.u*;QOSM+|=4C?WH?6eWPcK/6AkIXIVGQguSA*r"
+      THROTTLER_WHITE_LIST: "127.0.0.1"
+      TENANT_WHITE_LIST: "127.0.0.1"
+    ports:
+      - "3000"
+      - "4000"
+    volumes:
+      - ./:/usr/src/app
+    tty: true
+    links:
+      - redis
+
+  redis:
+    image: redis:3.2.11-alpine
+    ports:
+      - "6379"
